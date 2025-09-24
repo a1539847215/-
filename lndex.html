@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>网易云.小影</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 同意页样式 */
+        .agree-page {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a1f;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .agree-container {
+            background-color: #121235;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 0 0 30px rgba(255, 0, 255, 0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .agree-container h1 {
+            color: #f0f;
+            text-shadow: 0 0 10px #f0f, 0 0 20px #0ff;
+            margin-bottom: 20px;
+        }
+        .agreement {
+            background-color: #0f1f3f;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .agreement h2 {
+            color: #0ff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .countdown {
+            color: #f0f;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .agree-btn {
+            background: linear-gradient(to right, #0ff, #f0f);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            color: #0a0a1f;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .agree-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+            box-shadow: 0 0 15px #0ff, 0 0 20px #f0f;
+        }
+        .agree-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #0ff, 0 0 25px #f0f;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #a0a0a0;
+        }
+
+        /* 主页面样式 */
+        .main-page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: #0a0a2f;
+            color: #f0f0f0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .menu-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #0ff;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 15px #0ff, 0 0 6px rgba(0,255,255,0.5);
+            cursor: pointer;
+            background-color: rgba(0,255,255,0.05);
+        }
+        .menu-line {
+            width: 25px;
+            height: 3px;
+            background-color: #0ff;
+            box-shadow: 0 0 4px #0ff;
+        }
+        .title {
+            font-size: 20px;
+            color: #f0f;
+            text-shadow: 0 0 8px #f0f, 0 0 15px #0ff;
+        }
+        .time {
+            background-color: rgba(0,0,0,0.3);
+            padding: 4px 10px;
+            border: 2px solid #f0f;
+            border-radius: 6px;
+            font-size: 14px;
+            box-shadow: 0 0 12px #f0f, 0 0 5px rgba(255,0,255,0.5);
+            color: #f0f0f0;
+        }
+        .tip {
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: 12px;
+            color: #e0e0e0;
+        }
+        .tip strong {
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 4px rgba(0,255,255,0.7);
+        }
+        .notice {
+            background: linear-gradient(to right, #f0f, #0ff);
+            padding: 6px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 0 18px #0ff, 0 0 20px #f0f;
+        }
+        .notice p {
+            background-color: #121235;
+            padding: 6px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 12px;
+            color: #e0e0e0;
+        }
+        .notice p strong {
+            color: #0ff;
+            text-shadow: 0 0 8px #0ff;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin: 5px 0;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .main-btn {
+            width: 200px;
+            padding: 10px;
+            border: 2px solid;
+            border-image: linear-gradient(to bottom, #f0f, #0ff) 1;
+            border-radius: 10px;
+            background-color: rgba(0,0,0,0.2);
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px #0ff, 0 0 18px #f0f;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        .main-btn:hover {
+            box-shadow: 0 0 20px #0ff, 0 0 25px #f0f;
+            transform: scale(1.05);
+            background-color: rgba(0,0,0,0.1);
+        }
+        .greeting {
+            text-align: center;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px #0ff;
+            font-size: 12px;
+            color: #e0e0e0;
+        }
+        .product {
+            border: 2px solid;
+            border-image: linear-gradient(to right, #0ff, #f0f) 1;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 0 15px #0ff, 0 0 18px #f0f;
+            font-size: 12px;
+            background-color: rgba(0,0,0,0.2);
+        }
+        .product h3 {
+            text-align: center;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px #f0f;
+            font-size: 16px;
+            color: #f0f;
+        }
+        .product p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+        .buy-btn {
+            width: 180px;
+            margin: 0 auto;
+        
